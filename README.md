@@ -26,11 +26,11 @@ There are three topics:
  ```
  - MQTT_TOPIC_CMND : topic to send a command, name of device is added to the end. Value is typically 0 for OFF, 255 for ON (switch). A dimmer can have any value in between.
 ```bash
-# mosquitto_pub -h 192.168.1.30 -t qbus/cmnd/living_spots -m 0
+# mosquitto_pub -h 192.168.1.30 -t qbus/cmnd/living_spots -m 10
  ```
  translates to MQTT message
  ```bash
- qbus/cmnd/living_spots 1
+ qbus/cmnd/living_spots 10
  ```
  - MQTT_TOPIC_STAT : topic to subscribe for EQOWeb events, e.g turning off living_spots results in following MQTT message
  ```bash
