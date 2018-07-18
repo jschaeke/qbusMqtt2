@@ -1,0 +1,25 @@
+{
+  "name": "qbus-mqtt",
+  "version": "1.0.0",
+  "description": "JS to MQTT bridge for QBUS EQOweb controller",
+  "main": "server.js",
+  "keywords": [
+    "QBUS",
+    "EQOweb",
+    "api",
+    "MQTT"
+  ],
+  "author": {
+    "name": "Jeroen Schaeken",
+    "email": "jeroen.schaeken@gmail.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.9.0"
+  },
+  "dependencies": {
+    "mqtt": "^2.18.2",
+    "qbus-eqoweb-api": "^1.1.0"
+  },
+  "devDependencies": {}
+}
