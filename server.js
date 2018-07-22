@@ -49,6 +49,17 @@ const eqowebFormat = (deviceName) => {
     return deviceName.toLowerCase().replace(/_/g, " ");
 }
 
+const processGroups = (newGroups) => {
+    groups = newGroups;
+    console.log(`received groups ${JSON.stringify(groups)}`);
+    groups.forEach((group) => {
+        group.Itms.forEach((item) => {
+            client.publish(constants.MQTT_TOPIC_CHAN_NAMES + item.Chnl + "/" + mqttFormat(item.Nme));
+            client.publish(constants.MQTT_TOPIC_STAT + mqttFormat(item.Nme), item.Val.toString());
+        });
+    });
+};
+
 const runStat = () => {
     let sessionId;
     let channelId;
@@ -66,14 +77,7 @@ const runStat = () => {
             return getGroupsP(args);
         })
         .then((newGroups) => {
-            groups = newGroups;
-            console.log(`received groups ${JSON.stringify(groups)}`);
-            groups.forEach((group) => {
-                group.Itms.forEach((item) => {
-                    client.publish(constants.MQTT_TOPIC_CHAN_NAMES + item.Chnl + "/" + mqttFormat(item.Nme));
-                    client.publish(constants.MQTT_TOPIC_STAT + mqttFormat(item.Nme), item.Val.toString());
-                });
-            });
+            processGroups(newGroups);
 
             // EQOWEB to MQTT using listener for updates on EQOWEB
             let listener = new EventListener(args);
@@ -82,10 +86,12 @@ const runStat = () => {
                 client.publish(constants.MQTT_TOPIC_STAT + mqttFormat(update.name), update.newVal.toString());
             });
             listener.on('error', (error) => {
-                let errorMsg = "Error during EventListener watch, retry in " + retryTimeout  + " sec";
+                let errorMsg = "Error during EventListener watch, retry in " + retryTimeout + " sec";
                 console.log(errorMsg);
                 client.publish(constants.MQTT_TOPIC_STAT + "error", errorMsg);
-                setTimeout(() => { listener.run(); }, retryTimeout * 1000);
+                setTimeout(() => {
+                    listener.run();
+                }, retryTimeout * 1000);
 
             });
             listener.activate();
@@ -112,24 +118,30 @@ const runCmd = () => {
                 args = Object.assign({}, eqoWebArgs, {
                     sessionId
                 });
-
-                // message is Buffer
                 deviceName = topic.split("/").pop();
-                let deviceNameForEQOWEB = eqowebFormat(deviceName);
-                let value = parseInt(message.toString());
-                channelId = findChannelId(groups, deviceNameForEQOWEB);
-                console.log("Set " + deviceNameForEQOWEB + " to " + value + " with channeldId " + channelId);
-                let updateArgs = Object.assign({}, args, {
-                    sessionId: sessionId,
-                    channelId: channelId,
-                    newStatus: [value]
-                });
-                // update the status of a specific channel
-                updateChannelStatusP(updateArgs)
-                    .then((channelStatus) => {
-                        console.log(`received channel status ${JSON.stringify(channelStatus)}`);
-                        client.publish(constants.MQTT_TOPIC_STAT + deviceName, (channelStatus.Val[0]).toString());
+                if (deviceName === 'update') {
+                    getGroupsP(args)
+                        .then((newGroups) => {
+                            processGroups(newGroups);
+                        });
+                } else {
+                    let deviceNameForEQOWEB = eqowebFormat(deviceName);
+                    // message is Buffer
+                    let value = parseInt(message.toString());
+                    channelId = findChannelId(groups, deviceNameForEQOWEB);
+                    console.log("Set " + deviceNameForEQOWEB + " to " + value + " with channeldId " + channelId);
+                    let updateArgs = Object.assign({}, args, {
+                        sessionId: sessionId,
+                        channelId: channelId,
+                        newStatus: [value]
                     });
+                    // update the status of a specific channel
+                    updateChannelStatusP(updateArgs)
+                        .then((channelStatus) => {
+                            console.log(`received channel status ${JSON.stringify(channelStatus)}`);
+                            client.publish(constants.MQTT_TOPIC_STAT + deviceName, (channelStatus.Val[0]).toString());
+                        });
+                }
             })
             .catch((error) => {
                 console.log("runCmd ", error);

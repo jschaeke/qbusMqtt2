@@ -32,6 +32,10 @@ There are three topics:
  ```bash
  qbus/cmnd/living_spots 10
  ```
+ To retrieve the current state of all devices:
+```bash
+ # mosquitto_pub -h 192.168.1.30 -t qbus/cmnd/status -m 0
+```
  - MQTT_TOPIC_STAT : topic to subscribe for EQOWeb events, e.g turning off living_spots results in following MQTT message
  ```bash
  qbus/stat/living_spots 0
