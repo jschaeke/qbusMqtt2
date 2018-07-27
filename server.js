@@ -51,7 +51,7 @@ const eqowebFormat = (deviceName) => {
 
 const processGroups = (newGroups) => {
     groups = newGroups;
-    console.log(`received groups ${JSON.stringify(groups)}`);
+    // console.log(`received groups ${JSON.stringify(groups)}`);
     groups.forEach((group) => {
         group.Itms.forEach((item) => {
             client.publish(constants.MQTT_TOPIC_CHAN_NAMES + item.Chnl + "/" + mqttFormat(item.Nme));
@@ -67,7 +67,7 @@ const runStat = () => {
 
     connectP(eqoWebArgs)
         .then((newSessionId) => {
-            console.log(`created session ${newSessionId}`);
+            // console.log(`created session ${newSessionId}`);
             sessionId = newSessionId;
             args = Object.assign({}, eqoWebArgs, {
                 sessionId
@@ -113,7 +113,7 @@ const runCmd = () => {
         });
         connectP(args)
             .then((newSessionId) => {
-                console.log(`created session ${newSessionId}`);
+                // console.log(`created session ${newSessionId}`);
                 sessionId = newSessionId;
                 args = Object.assign({}, eqoWebArgs, {
                     sessionId
