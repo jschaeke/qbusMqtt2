@@ -3,7 +3,7 @@ A Qbus EQOweb to MQTT bridge
 
 # Purpose
 This script acts a bridge between an MQTT broker and a Qbus home automation system (Eqoweb).
-By doing so, Qbus can be integrated into a home automation solution such as Domogik, Hass.io, OpenHab or Domoticz. Also interesting is Node-RED to easily setup flows with other online services like IFTTT, PushOver, Alexa, Telegram...
+By doing so, Qbus can be integrated into a home automation solution like Domogik, Hass.io, OpenHab or Domoticz. Node-RED is also quite interesting to easily setup automation flows and to connect other online services like IFTTT, PushOver, Alexa, Telegram...
 
 # How it works
 There are three topics:
