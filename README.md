@@ -36,7 +36,7 @@ There are three topics:
 ```bash
  # mosquitto_pub -h 192.168.1.30 -t qbus/cmnd/update -m 0
 ```
- - MQTT_TOPIC_STAT : topic to subscribe for EQOWeb events, e.g turning off living_spots results in following MQTT message
+ - MQTT_TOPIC_STAT : topic to subscribe for EQOWeb events, e.g turning off living_spots results in MQTT message
  ```bash
  qbus/stat/living_spots 0
  ```
