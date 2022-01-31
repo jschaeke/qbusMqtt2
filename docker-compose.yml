@@ -1,0 +1,16 @@
+version: '3.8'
+services: 
+    web:
+        build:
+            context: .
+        env_file: ./.env
+        environment: 
+            EQOWEB_USERNAME: $EQOWEB_USERNAME
+            EQOWEB_PASSWORD: $EQOWEB_PASSWORD
+            EQOWEB_ADDRESS: $EQOWEB_ADDRESS
+            MQTT_HOST: $MQTT_HOST
+            MQTT_PORT: $MQTT_PORT
+            MQTT_TOPIC_CMND: $MQTT_TOPIC_CMND
+            MQTT_TOPIC_STAT: $MQTT_TOPIC_STAT
+            MQTT_TOPIC_CHAN_NAMES: $MQTT_TOPIC_CHAN_NAMES
+        command: npm start

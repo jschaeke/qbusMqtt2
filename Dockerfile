@@ -15,4 +15,4 @@ RUN npm install --only=production
 # Bundle app source
 COPY . .
 
-CMD [ "npm", "start" ]
+# CMD [ "npm", "start" ]
