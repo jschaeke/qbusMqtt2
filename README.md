@@ -51,3 +51,4 @@ MQTT and EQOWeb configuration is set in .env file.
 npm i
 npm run start
 ```
+For examples on Home Assistant integration, I gladly refer to https://github.com/jschaeke/qbusMqtt2/issues/2. 
