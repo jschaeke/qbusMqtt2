@@ -18,7 +18,7 @@
     "node": ">=6.9.0"
   },
   "dependencies": {
-    "mqtt": "^2.18.2",
+    "mqtt": "^4.3.7",
     "qbus-eqoweb-api": "^1.2.0"
   },
   "devDependencies": {}
